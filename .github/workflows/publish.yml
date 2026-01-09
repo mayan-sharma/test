@@ -22,7 +22,7 @@ jobs:
 
           echo ""
           echo "Replacing 'catalyst-core' with 'catalyst-core-internal'..."
-          find ./dist -type f \( -name "*.js" -o -name "*.ts" \) -exec sed -i 's/catalyst-core/catalyst-core-internal/g' {} \;
+          find ./dist -type f \( -name "*.js" -o -name "*.ts" \) -exec sed -i 's/catalyst-core/catalyst-core-internal/g' {} +
 
           echo ""
           echo "Files containing 'catalyst-core-internal' AFTER replacement:"

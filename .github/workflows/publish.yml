@@ -1,0 +1,38 @@
+name: Rename dist references
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Rename dist files
+        run: |
+          # Replace 'catalyst-core' with 'catalyst-core-internal' in all dist files
+          echo "Files containing 'catalyst-core' BEFORE replacement:"
+          grep -rl "catalyst-core" ./dist --include="*.js" --include="*.ts" || echo "No matches found"
+
+          echo ""
+          echo "Replacing 'catalyst-core' with 'catalyst-core-internal'..."
+          find ./dist -type f \( -name "*.js" -o -name "*.ts" \) -exec sed -i 's/catalyst-core/catalyst-core-internal/g' {} \;
+
+          echo ""
+          echo "Files containing 'catalyst-core-internal' AFTER replacement:"
+          grep -rl "catalyst-core-internal" ./dist --include="*.js" --include="*.ts" || echo "No matches found"
+
+          echo ""
+          echo "Printing contents of modified files:"
+          grep -rl "catalyst-core-internal" ./dist --include="*.js" --include="*.ts" \
+            | while read -r file; do
+                echo ""
+                echo "===== $file ====="
+                cat "$file"
+              done
